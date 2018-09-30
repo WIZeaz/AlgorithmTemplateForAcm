@@ -2,6 +2,7 @@
 #include <cstring>
 using namespace std;
 #define MatrixN 2
+//Change MatrixN to change the size of matrix
 struct matrix{
     int arr[MatrixN][MatrixN];
     matrix(){memset(arr,0,sizeof(arr));}
@@ -11,6 +12,9 @@ struct matrix{
             tmp.arr[i][i]=1;
         return tmp;
     }
+    matrix set(const int b[MatrixN][MatrixN]){
+        memcpy(arr,b,sizeof(arr));
+    }
     matrix operator * (const matrix &b) const{
         matrix tmp;
         for (int i=0;i<MatrixN;++i)
@@ -19,11 +23,8 @@ struct matrix{
                     tmp.arr[i][j]+=arr[i][k]*b.arr[k][j];
         return tmp;
     }
-    matrix set(const int b[MatrixN][MatrixN]){
-        memcpy(arr,b,sizeof(arr));
-    }
 };
-template<typename T>
+template<typename T> 
 T QuickPower(T x,int y,T unit) //unit*x=x
 {
     if (y==0) return unit;
@@ -38,6 +39,7 @@ T QuickPower(T x,int y,T unit) //unit*x=x
 }
 int main()
 {
+    //use Fibonacci Sequence for example.
     int y;
     int init[2][2]={{0,1},{1,1}};
     while (cin>>y){
