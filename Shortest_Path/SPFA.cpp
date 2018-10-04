@@ -1,4 +1,4 @@
-//POJ-3259 spfa bfs ÅĞ¸ºÈ¨»ØÂ· 
+//POJ-3259 spfa bfs åˆ¤è´Ÿæƒå›è·¯ 
 #include<iostream>
 #include<cstdio>
 #include<cstring>
@@ -7,7 +7,7 @@
 #include<queue>
 #define ll long long
 using namespace std;
-const int MAX=5e2+5;//µãÊı×î´óÖµ 
+const int MAX=5e2+5;//ç‚¹æ•°æœ€å¤§å€¼ 
 const int INF=1e9;
 
 struct pair_edge{
@@ -17,15 +17,15 @@ struct pair_edge{
 
 vector<pair_edge>edge[MAX];
 int t;//test cases
-int num_point,num_positive_edge,num_negative_edge;//µãÊı£¬Õı±ßÊı£¬¸º±ßÊı£¨ÊÓÇé¿ö¶ø¶¨£© 
-int cnt[MAX];//¼ÇÂ¼¸÷µã±»Èë¶ÓµÄ´ÎÊı 
-int dis[MAX];//µ½ÆğµãµÄ¾àÀë
+int num_point,num_positive_edge,num_negative_edge;//ç‚¹æ•°ï¼Œæ­£è¾¹æ•°ï¼Œè´Ÿè¾¹æ•°ï¼ˆè§†æƒ…å†µè€Œå®šï¼‰ 
+int cnt[MAX];//è®°å½•å„ç‚¹è¢«å…¥é˜Ÿçš„æ¬¡æ•° 
+int dis[MAX];//åˆ°èµ·ç‚¹çš„è·ç¦»
  
 bool spfa()
 {
 	queue<int>que;
 	dis[1]=0;
-	cnt[1]++;//±»Èë¶Ó 
+	cnt[1]++;//è¢«å…¥é˜Ÿ 
 	que.push(1);
 	
 	while(!que.empty())
@@ -41,12 +41,12 @@ bool spfa()
 			{
 				dis[temp.to]=dis[from]+temp.len;
 				que.push(temp.to);
-				cnt[temp.to]++;//±»Èë¶Ó 
-				if(cnt[temp.to]>=num_point) return true;//Èô±»Èë¶Ó³¬¹ın´Î£¬ËµÃ÷ÓĞ¸ºÈ¨»ØÂ·
+				cnt[temp.to]++;//è¢«å…¥é˜Ÿ 
+				if(cnt[temp.to]>=num_point) return true;//è‹¥è¢«å…¥é˜Ÿè¶…è¿‡næ¬¡ï¼Œè¯´æ˜æœ‰è´Ÿæƒå›è·¯
 			}
 		}
 	}
-	//ÎŞ¸ºÈ¨»ØÂ· 
+	//æ— è´Ÿæƒå›è·¯ 
 	return false;
 }
 int main()
@@ -56,7 +56,7 @@ int main()
 	{
 		scanf("%d%d%d",&num_point,&num_positive_edge,&num_negative_edge);
 		
-		//³õÊ¼»¯
+		//åˆå§‹åŒ–
 		for(int i=1;i<=num_point;++i)
 		{
 			dis[i]=INF;
@@ -68,14 +68,14 @@ int main()
 		for(int i=0;i<num_positive_edge;++i)
 		{
 			scanf("%d%d%d",&start,&end,&len);
-			//´ËÌâµÄÕı±ßÄ¬ÈÏÎªË«Ïò 
+			//æ­¤é¢˜çš„æ­£è¾¹é»˜è®¤ä¸ºåŒå‘ 
 			edge[start].push_back(pair_edge(end,len));
 			edge[end].push_back(pair_edge(start,len));
 		}
 		for(int i=0;i<num_negative_edge;++i)
 		{
 			scanf("%d%d%d",&start,&end,&len);
-			//´ËÌâµÄ¸º±ßÄ¬ÈÏÎªµ¥Ïò±ß 
+			//æ­¤é¢˜çš„è´Ÿè¾¹é»˜è®¤ä¸ºå•å‘è¾¹ 
 			edge[start].push_back(pair_edge(end,-len));
 		}
 		
