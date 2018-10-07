@@ -10,15 +10,14 @@ O(n)查询转移
 #include <cstring>
 #include <string>
 using namespace std;
-#define N 500000
+#define N 300000
 struct ACAM_node{
     int k[26];
     int fail;
     int sum;
 };
 struct ACAM{
-    ACAM_node tr[2*N];
-    int que[2*N];
+    ACAM_node tr[N];
     int num;
     void clear(){
         memset(tr,0,sizeof(tr));
@@ -38,6 +37,7 @@ struct ACAM{
         ++tr[now].sum;
     }
     void build(){
+        int que[N];
         int q,p;
         p=0; q=0;
         for (int i=0;i<26;++i)
@@ -69,9 +69,9 @@ struct ACAM{
             int t=ch[i]-'a';
             now=tr[now].k[t];
             int tmp=now;
-            while (tr[tmp].sum>0){
+            while (tr[tmp].sum>=0){
                 ans+=tr[tmp].sum;
-                tr[tmp].sum=0;
+                tr[tmp].sum=-1;
                 tmp=tr[tmp].fail;
             }
         }
