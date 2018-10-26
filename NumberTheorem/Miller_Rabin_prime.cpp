@@ -28,7 +28,7 @@ ull mult_mod(ull a,ull b,ull c){
         //if(b&1)ans=(ans+base)%c;
         //base=(base<<1)%c;
         if(b&1){
-			ans+=base;
+	    ans+=base;
             if(ans>c)ans-=c;
         }
         base<<=1;
@@ -50,12 +50,12 @@ ull pow_mod(ull a,ull b,ull c){
 }
 
 bool Miller_Rabin(ull n){
-    if(n&1==0&&n<2)return false;
+    if((n&1)==0&&n<2)return false;
     if(n==2)return true;
 
     // n-1=x* 2^t
     ull x=n-1,t=0;
-    while(x&1==0)x>>=1,t++;
+    while((x&1)==0)x>>=1,t++;
     
     for(int i=0;i<S;i++){
         ull a=rand()%(n-1)+1;
