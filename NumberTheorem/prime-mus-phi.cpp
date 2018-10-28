@@ -18,7 +18,7 @@ void Sieve(int n)
     for (int i=2;i<=n;++i){
         if (isPrime[i]) {
             primeList[num]=i;
-            mus[i]=-1;
+            mo[i]=-1;
             phi[i]=i-1;
             ++num;
         }

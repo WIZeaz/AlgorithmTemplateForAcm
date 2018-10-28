@@ -31,6 +31,8 @@ struct matrix{
         memcpy(arr,b,sizeof(arr));
     }
 };
+
+//QuickPower copy from here
 template<typename T>
 T QuickPower(T x,long long y,T unit) //unit*x=x
 {
@@ -44,6 +46,7 @@ T QuickPower(T x,long long y,T unit) //unit*x=x
     }
     return ans;
 }
+
 int main()
 {
     int y;
