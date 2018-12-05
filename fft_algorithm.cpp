@@ -6,10 +6,11 @@
 //#include<complex>
 #include<cmath>
 using namespace std;
-//£¨¶¨ÒåÇø£©
-const int MAX=3e5+10;//È«¾Ö±äÁ¿maxlenµÄÉÏÏÞ
-const double PI=acos(-1);//¶¨ÒåPI
+//ï¼ˆå®šä¹‰åŒºï¼‰
+const int MAX=3e5+10;//å…¨å±€å˜é‡maxlençš„ä¸Šé™
+const double PI=acos(-1);//å®šä¹‰PI
 
+//å¤æ•°å®šä¹‰
 typedef struct cpx {
 	double r,i;
 	cpx() {}
@@ -31,24 +32,24 @@ typedef struct cpx {
 	}
 } cpx;
 
-//(È«¾ÖÊý¾ÝÇø£¬Ã¿¸öcase¶¼Òª¸üÐÂ)
-cpx ratio_a[MAX],ratio_b[MAX];//A,B¶àÏîÊ½µÄÏµÊý£¬¸´ÊýÐÎÊ½
-int la,lb;//A,B¶àÏîÊ½µÄÏîÊý
-int maxlen;//´óÓÚµÈÓÚla+lb-1µÄµÚÒ»¸ö2µÄÕûÊý´ÎÃÝ
-int reverse[MAX];//´æ´¢0~maxlen-1ÄÚËùÓÐÊýµÄ¶þ½øÖÆµ¹ÖÃºóµÄÖµ£¬·½±ãÖ±½Ó²éÑ¯
+//(å…¨å±€æ•°æ®åŒºï¼Œæ¯ä¸ªcaseéƒ½è¦æ›´æ–°)
+cpx ratio_a[MAX],ratio_b[MAX];//A,Bå¤šé¡¹å¼çš„ç³»æ•°ï¼Œå¤æ•°å½¢å¼
+int la,lb;//A,Bå¤šé¡¹å¼çš„é¡¹æ•°
+int maxlen;//å¤§äºŽç­‰äºŽla+lb-1çš„ç¬¬ä¸€ä¸ª2çš„æ•´æ•°æ¬¡å¹‚
+int reverse[MAX];//å­˜å‚¨0~maxlen-1å†…æ‰€æœ‰æ•°çš„äºŒè¿›åˆ¶å€’ç½®åŽçš„å€¼ï¼Œæ–¹ä¾¿ç›´æŽ¥æŸ¥è¯¢
 
-//»ñµÃreverseÊý×é£¬²»ÖªµÀÓÐÃ»ÓÐ¸üºÃµÄ°ì·¨¡£¡£
+//èŽ·å¾—reverseæ•°ç»„ï¼Œä¸çŸ¥é“æœ‰æ²¡æœ‰æ›´å¥½çš„åŠžæ³•ã€‚ã€‚
 void getreverse() {
-	//int total=maxlen>>1;//log(2)(total) ¼´Îª0~maxlen-1ÄÚµÄÊýµÄ¶þ½øÖÆÎ»Êý
+	//int total=maxlen>>1;//log(2)(total) å³ä¸º0~maxlen-1å†…çš„æ•°çš„äºŒè¿›åˆ¶ä½æ•°
 	int bit=0,cmp=maxlen;
 	while(cmp>1)cmp>>=1,bit++;
 	for(int i=0; i<maxlen; i++)
 		reverse[i]=(reverse[i>>1]>>1)|((i&1)<<(bit-1));
 }
 
-//FFTÖ÷Ìå£¬arrayÎªÒª½øÐÐDFT£¨ÀëÉ¢¸µÀïÒ¶±ä»»£©»òIDFT£¨ÀëÉ¢¸µÀïÒ¶·´±ä»»£©µÄÊý×é£¬dftÎª1£ºDFT£¬-1£ºIDFT
+//FFTä¸»ä½“ï¼Œarrayä¸ºè¦è¿›è¡ŒDFTï¼ˆç¦»æ•£å‚…é‡Œå¶å˜æ¢ï¼‰æˆ–IDFTï¼ˆç¦»æ•£å‚…é‡Œå¶åå˜æ¢ï¼‰çš„æ•°ç»„ï¼Œdftä¸º1ï¼šDFTï¼Œ-1ï¼šIDFT
 void fft(cpx *array,int dft) {
-	//½»»»ÏÂ±ê»¥Îªµ¹ÖÃµÄÊý×éÔªËØ
+	//äº¤æ¢ä¸‹æ ‡äº’ä¸ºå€’ç½®çš„æ•°ç»„å…ƒç´ 
 	for(int i=0; i<maxlen; ++i) {
 		int temp=reverse[i];
 		if(temp<=i) continue;
@@ -56,11 +57,11 @@ void fft(cpx *array,int dft) {
 		array[i]=array[temp];
 		array[temp]=tempp;
 	}
-	//ºûµû²Ù×÷£¬±¶Ôö£¬´Ó²½³¤Îª1¿ªÊ¼
+	//è´è¶æ“ä½œï¼Œå€å¢žï¼Œä»Žæ­¥é•¿ä¸º1å¼€å§‹
 	for(int step=1; step<maxlen; step<<=1) {
-		cpx atom(cos(PI/step),dft*sin(PI/step));//¼ÆËãµ¥Î»¸´¸ùatom£¨ÒÔ2*step£©Îªµ×
+		cpx atom(cos(PI/step),dft*sin(PI/step));//è®¡ç®—å•ä½å¤æ ¹atomï¼ˆä»¥2*stepï¼‰ä¸ºåº•
 		for(int start=0; start<maxlen; start+=step+step) {
-			cpx atoms=cpx(1,0);//µ¥Î»¸´¸ùµÄ0´Î·½
+			cpx atoms=cpx(1,0);//å•ä½å¤æ ¹çš„0æ¬¡æ–¹
 			for(int j=start; j<start+step; ++j) {
 				//B[j]=L[j]+atoms*R[j]
 				//B[n/2+j]=L[j]-atoms*R[j]
@@ -71,39 +72,39 @@ void fft(cpx *array,int dft) {
 			}
 		}
 	}
-	//ÈôÎªIDFT£¬Ã¿Ò»Ïî³ýÒÔmaxlen
+	//è‹¥ä¸ºIDFTï¼Œæ¯ä¸€é¡¹é™¤ä»¥maxlen
 	if(dft==-1)
 		for(int i=0; i<maxlen; ++i) array[i]=array[i]/maxlen;
 }
 
-//ÐèÏÈ×¼±¸ºÃratio_aºÍratio_bµÄÒâÒå
+//éœ€å…ˆå‡†å¤‡å¥½ratio_aå’Œratio_bçš„æ„ä¹‰
 void solve() {
-	//»ñÈ¡maxlenµÄÖµ
+	//èŽ·å–maxlençš„å€¼
 	maxlen=1;
 	while(maxlen<la+lb-1) maxlen<<=1;
 
-	//»ñÈ¡reverseÊý×é
+	//èŽ·å–reverseæ•°ç»„
 	getreverse();
 
-	//½«A£¬B¶àÏîÊ½À©Õ¹µÄÏîµÄÏµÊýÖÃÎªÁã
+	//å°†Aï¼ŒBå¤šé¡¹å¼æ‰©å±•çš„é¡¹çš„ç³»æ•°ç½®ä¸ºé›¶
 	for(int i=la; i<maxlen; ++i) ratio_a[i]=cpx(0,0);
 	for(int i=lb; i<maxlen; ++i) ratio_b[i]=cpx(0,0);
 
 	fft(ratio_a,1);
-	fft(ratio_b,1);//·Ö±ð¶ÔÁ½¸ö´ý³Ë¶àÏîÊ½DFT
-	for(int i=0; i<maxlen; ++i) ratio_a[i]=ratio_a[i]*ratio_b[i]; //ÔÚµã±íÊ¾·¨ÏÂÇóÁ½¶àÏîÊ½µÄ»ý
-	fft(ratio_a,-1);//IDFT£¬½«µã±íÊ¾·¨µÄ¶àÏîÊ½Ö®»ý×ª»»ÎªÏµÊý±íÊ¾·¨£¬ÏµÊý´æµ½ratio_aÊý×éÖÐ
+	fft(ratio_b,1);//åˆ†åˆ«å¯¹ä¸¤ä¸ªå¾…ä¹˜å¤šé¡¹å¼DFT
+	for(int i=0; i<maxlen; ++i) ratio_a[i]=ratio_a[i]*ratio_b[i]; //åœ¨ç‚¹è¡¨ç¤ºæ³•ä¸‹æ±‚ä¸¤å¤šé¡¹å¼çš„ç§¯
+	fft(ratio_a,-1);//IDFTï¼Œå°†ç‚¹è¡¨ç¤ºæ³•çš„å¤šé¡¹å¼ä¹‹ç§¯è½¬æ¢ä¸ºç³»æ•°è¡¨ç¤ºæ³•ï¼Œç³»æ•°å­˜åˆ°ratio_aæ•°ç»„ä¸­
 }
 
-//ÒÔ³¬´óÕûÊý³Ë·¨ÎªÀý
-char number[MAX];//´æ³õÊ¼×Ö·û´®
-int inians[MAX];//³õÊ¼´ð°¸
-int finalans[MAX];//×îÖÕ´ð°¸
+//ä»¥è¶…å¤§æ•´æ•°ä¹˜æ³•ä¸ºä¾‹
+char number[MAX];//å­˜åˆå§‹å­—ç¬¦ä¸²
+int inians[MAX];//åˆå§‹ç­”æ¡ˆ
+int finalans[MAX];//æœ€ç»ˆç­”æ¡ˆ
 int ans[MAX];
 int main() {
 	while(~scanf("%s",number)) {
-		la=strlen(number);//»ñµÃla
-		for(int i=0; i<la; ++i)  //½«ÊäÈëÊý×ÖµÄÃ¿Ò»Î»×ª»»Îª¸´Êý²¢µßµ¹
+		la=strlen(number);//èŽ·å¾—la
+		for(int i=0; i<la; ++i)  //å°†è¾“å…¥æ•°å­—çš„æ¯ä¸€ä½è½¬æ¢ä¸ºå¤æ•°å¹¶é¢ å€’
 			ratio_a[la-i-1]=cpx(number[i]-'0',0);
 
 		scanf("%s",number);
@@ -111,7 +112,7 @@ int main() {
 		for(int i=0; i<lb; ++i)
 			ratio_b[lb-i-1]=cpx(number[i]-'0',0);
 
-		//½øÐÐFFT
+		//è¿›è¡ŒFFT
 		solve();
 
 		int pre=0;
