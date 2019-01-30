@@ -8,6 +8,8 @@ struct node{
 const int N=100000;
 const int root=0;
 struct Segment_Tree{
+    //constants
+
     //clarification
     int num;    
     node tr[4*N];
@@ -39,15 +41,20 @@ struct Segment_Tree{
         tr[now].val=tr[tr[now].lc].val+tr[tr[now].rc].val;
     }
     /*void update(int l,int r,int val,int now=root){
-                int mid=(tr[now].l+tr[now].r)>>1;
+        
         if (tr[now].l==l && tr[now].r==r) {
-            //change the value you need
+            //lazy operation
             tr[now].val=val; 
             return;
-        } else if (pos<=mid) update(pos,val,tr[now].lc);
-        else update(pos,val,tr[now].rc);
-        //write parent update here
-        tr[now].val=tr[tr[now].lc].val+tr[tr[now].rc].val;
+        } else {
+            //Pushdown here
+            //Pushdown end
+            int mid=(tr[now].l+tr[now].r)>>1;
+            if (pos<=mid) update(pos,val,tr[now].lc);
+            else update(pos,val,tr[now].rc);
+            //write parent update here
+            tr[now].val=tr[tr[now].lc].val+tr[tr[now].rc].val;
+        }
     }*/
     int query(int l,int r,int now=root){
         if (tr[now].l==l && tr[now].r==r) return tr[now].val;
