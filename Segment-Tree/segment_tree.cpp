@@ -12,7 +12,7 @@ struct Segment_Tree{
 
     //clarification
     int num;    
-    node tr[4*N];
+    node tr[2*N];
 
     //methods
     void setRange(int l,int r,int now=root){
