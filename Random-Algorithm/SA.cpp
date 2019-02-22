@@ -68,8 +68,9 @@ inline void solve(int n) {
 		// 温度（波动范围）下降
 		t*=delta;
 	}
-
-	printf("%.0Lf\n",pre);
+	cout<<pp.ff<<' '<<pp.ss<<endl;
+	cout<<int(pre+0.5);
+	//printf("%.0Lf\n",pre);
 }
 
 int main() {
