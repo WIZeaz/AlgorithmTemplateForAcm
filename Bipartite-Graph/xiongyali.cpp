@@ -1,5 +1,5 @@
-// ¶þ·ÖÍ¼×î´óÆ¥Åä
-// ÁÚ½Ó¾ØÕó O(VE)
+// ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½
+// ï¿½Ú½Ó¾ï¿½ï¿½ï¿½ O(VE)
 #include<cstdio>
 #include<cstring>
 #include<vector>
@@ -18,11 +18,11 @@ int link[N],n,m;
 bool used[N];
 vector<int>w[N];
 
-inline bool dfs(int x) {
+inline bool find(int x) {
     for(int i=0; i<w[x].size(); i++)
         if(!used[w[x][i]]) {
             used[w[x][i]]=true;
-            if(link[w[x][i]]==-1||dfs(link[w[x][i]])) {
+            if(link[w[x][i]]==-1||find(link[w[x][i]])) {
                 link[w[x][i]]=x;
                 return true;
             }
@@ -35,7 +35,7 @@ inline int solve() {
     int ans=0;
     for(int i=1; i<=n; i++) {
         memset(used,false,sizeof used);
-        if(dfs(i))ans++;
+        if(find(i))ans++;
     }
     return ans;
 }

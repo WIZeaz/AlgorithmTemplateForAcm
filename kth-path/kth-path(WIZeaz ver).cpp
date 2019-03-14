@@ -7,7 +7,7 @@ using namespace std;
 
 //dijkstra
 #define N 2000
-#define INF 0x7f7f7f7f
+#define INF 0x3f3f3f3f
 struct PathNode{
     int to,val;
     PathNode(){}
@@ -25,7 +25,7 @@ void dijkstra(int s)
 {
     priority_queue<PathNode> v;
     memset(vis,false,sizeof(vis)); 
-    memset(dis,127,sizeof(dis));
+    memset(dis,0x3f,sizeof(dis));
     dis[s]=0;
     v.push(PathNode(s,0));
     while (!v.empty()){
@@ -52,13 +52,19 @@ struct SearchNode{
         return totdis>b.totdis;
     }
 };
-void search(){
+int cnt[N+1];
+int kpath(int s,int t,int k){
+    if (dis[s]==INF) return -1;
+    memset(cnt,0,sizeof(cnt));
+    if (s==t) ++k;
+
     priority_queue<SearchNode> que;
     que.push(SearchNode(s,0,dis[s]));
 
     while (!que.empty()){
         SearchNode tmp=que.top();
         que.pop();
+        ++cnt[tmp.x];
         if (cnt[t]==k) return tmp.totdis;
         if (cnt[tmp.x]>k) continue;
         for (int i=0;i<list2[tmp.x].size();++i){
