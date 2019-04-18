@@ -1,48 +1,22 @@
 // poj2420 模拟退火
 // 题意：找n个点的费马点（与其他点的距离之和最小）
+#include<iostream>
 #include<cstdio>
 #include<cmath>
-#include<algorithm>
-#include<iostream>
-#include<vector>
-#include<queue>
-#include<string>
-#include<cstring>
-#include<queue>
-#include<map>
 using namespace std;
-#define ll long long
-#define ull unsigned long long
-#define up(i,a,b) for(int i=(a);i<=(b);i++)
-#define down(i,a,b) for(int i=(a);i>=(b);i--)
-#define mem(x,y) memset(x,(y),sizeof x)
-#define ff first
-#define ss second
-#define pa(x,y) make_pair(x,y)
-#define pb(x) push_back(x)
-#define sc(a) scanf("%d",&a)
-#define scl(a) scanf("%I64d",&a)
-#define scs(a) scanf("%s",a)
-#define pr(a,b) printf("%d%c",a,b)
-#define prl(a,b) printf("%lld%c",a,b)
-#define PQ priority_queue
-#define ld long double
 
-typedef pair<double,double>pdd;
-typedef map<int,int> mii;
-
-pdd a[10010];
-ld pre,cur;
+pair<double,double> a[10010];
+long double pre,cur;
 int dd[4][2]= {0,1,0,-1,1,0,-1,0};
 int w[10010]= {0};
 
-inline ld dis(pdd a,pdd b) {
-	return sqrt((a.ff-b.ff)*(a.ff-b.ff)+(a.ss-b.ss)*(a.ss-b.ss));
+inline long double dis(pair<double,double> a,pair<double,double> b) {
+	return sqrt((a.first-b.first)*(a.first-b.first)+(a.second-b.second)*(a.second-b.second));
 }
 
-inline ld cal(int n,pdd aa) {
-	ld ans=0;
-	up(i,1,n)ans+=dis(aa,a[i]);
+inline long double cal(int n,pair<double,double> aa) {
+	long double ans=0;
+	for(int i=1;i<=n;i++)ans+=dis(aa,a[i]);
 	return ans;
 }
 
@@ -51,32 +25,30 @@ inline void solve(int n) {
 	const double delta=0.98;
 
 	pre=cal(n,a[1]);// 初始状态的值
-	pdd pp=a[1];// 初始状态的点
+	pair<double,double> pp=a[1];// 初始状态的点
 
 	// 当温度（波动范围）大于0（1e-14）时，继续退火
 	while(t>t_min) {
 		// 新的状态的值
-		double x=pp.ff+(rand()*2-RAND_MAX)*t,y=pp.ss+(rand()*2-RAND_MAX)*t;
+		double x=pp.first+(rand()*2-RAND_MAX)*t,y=pp.second+(rand()*2-RAND_MAX)*t;
 		// 新的状态的点
-		ld cur=cal(n,pa(x,y));
+		long double cur=cal(n,make_pair(x,y));
 
 		// 如果更优，则更新结果
-		if(cur-pre<0)pre=cur,pp=pa(x,y);
+		if(cur-pre<0)pre=cur,pp=make_pair(x,y);
 		// 否则以一定的概率接受这个新的状态
-		else if(exp((pre-cur)/t)*RAND_MAX>=rand())pre=cur,pp=pa(x,y);
+		else if(exp((pre-cur)/t)*RAND_MAX>=rand())pre=cur,pp=make_pair(x,y);
 
 		// 温度（波动范围）下降
 		t*=delta;
 	}
-	cout<<pp.ff<<' '<<pp.ss<<endl;
-	cout<<int(pre+0.5);
-	//printf("%.0Lf\n",pre);
+	printf("%d\n",int(pre+0.5));
 }
 
 int main() {
 	int n;
 	while(~scanf("%d",&n)) {
-		for(int i=1; i<=n; i++)scanf("%lf%lf",&a[i].ff,&a[i].ss);
+		for(int i=1; i<=n; i++)scanf("%lf%lf",&a[i].first,&a[i].second);
 		solve(n);
 	}
 }
