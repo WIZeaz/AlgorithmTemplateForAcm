@@ -81,8 +81,6 @@ struct Line
             return make_pair(1, res);
     }
 };
-Point point[N + 10];
-Line line[N + 10];
 
 double dist(Point a, Point b)
 {
