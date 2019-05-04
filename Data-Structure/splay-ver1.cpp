@@ -2,14 +2,18 @@
 #include <cstdio>
 #include <cstring>
 using namespace std;
-#define nodeMaxNum 200000
+#define NODENUM 200000
 struct splayTree{
-    int son[nodeMaxNum][2],size[nodeMaxNum],f[nodeMaxNum],cnt[nodeMaxNum];
-    int key[nodeMaxNum];
+    int son[NODENUM][2],size[NODENUM],f[NODENUM],cnt[NODENUM];
+    int key[NODENUM];
     int root;
-    int num=0;
+    int num;
+    splayTree(){num=root=0;}
     int get(int x){
         return (son[f[x]][0]==x)?0:1;
+    }
+    void clear(int x){
+        size[x]=0; f[x]=0; son[x][0]=son[x][1]=0; cnt[x]=0; key[x]=0;
     }
     void clear(){
         root=0; num=0;
@@ -21,7 +25,6 @@ struct splayTree{
     void pushUp(int x){
         size[x]=son[x][0][size]+son[x][1][size]+cnt[x];
     }
-    //TODO: fix rotate and splay function
     void rotate(int x){
         int k=get(x);
         int y=f[x];
@@ -50,7 +53,7 @@ struct splayTree{
             last=x;
             if (val<key[x]) {x=son[x][0]; t=0;}
             else if (val>key[x]) {x=son[x][1]; t=1;}
-            else {++cnt[x]; ++size[x]; splay(x,root); break;}
+            else {++cnt[x]; ++size[x]; splay(x,root); return;}
         }
         ++num;
         cnt[num]=1; size[num]=1; key[num]=val; 
@@ -67,6 +70,7 @@ struct splayTree{
             else if (val>key[x]) {rnk+=size[son[x][0]]+cnt[x];  x=son[x][1]; }
             else {
                 rnk+=size[son[x][0]];
+                splay(x,root);
                 return rnk;
             }
         }
@@ -78,15 +82,15 @@ struct splayTree{
         int s=0;
         while (x!=0){
             last=x;
-            if (son[x][0][size]<k) {x=son[x][1]; k-=son[x][0][size];}
-            else x=son[x][0];
+            if (size[son[x][0]]>=k) x=son[x][0];
+            else if (size[son[x][0]]+cnt[x]>=k){ splay(x,root); return key[x];}
+            else {k-=size[son[x][0]]+cnt[x]; x=son[x][1];}
         }
         return key[last];
     }
     
     int findnum(int val){
         int x=root;
-        int rnk=1;
         while (x!=0){
             if (val<key[x]) x=son[x][0];
             else if (val>key[x]) x=son[x][1];
@@ -98,43 +102,43 @@ struct splayTree{
         int x=findnum(val);
         if (x==-1) return;
         --cnt[x];
+        splay(x,root);
         if (cnt[x]>0) return;
 
-        splay(x,root);
-
-        if (son[x][0]==0){ root=son[x][1]; pushUp(root); return;}
+        if (son[x][0]==0){ root=son[x][1]; f[root]=0; clear(x); pushUp(root); return;}
 
         int now=son[x][0];
         while (son[now][1]!=0) {now=son[now][1];}
         splay(now,son[x][0]);
-        son[now][1]=son[x][1];
-        if (son[x][1]) f[son[x][1]]=now;
+        if (son[x][1]){
+            son[now][1]=son[x][1];
+            f[son[x][1]]=now;
+        }
 
+        f[now]=0;
         root=now;
+        clear(x);
         pushUp(root);
-        /*if (son[x][k][son][k^1]==0){
-            root=son[x][k]; f[son[x][k]]=0;
-            son[root][k^1]=son[x][k^1];
-            f[son[x][k^1]]=root;
-        } else {
-            int x=son[x][k];
-            while (son[x][k^1]!=0) {x=son[x][k^1];}
-            son[f[x]][get(x)]=0;
-            root=x; f[x]=0;
-            son[x][0]=son[x][0]; son[x][1]=son[x][1];
-        }*/
     }
     int pre(int val){
         insert(val);
         int ans=-1;
-        if (son[root][0]!=0) ans=key[son[root][0]];
+        int now=son[root][0];
+        while (now!=0){ans=key[now]; now=son[now][1];}
         del(val);
         return ans;
+    }
+    void traverse(int now){
+        if (now==0) return;
+        traverse(son[now][0]);
+        cout<<key[now]<<' ';
+        traverse(son[now][1]);
     }
     int nxt(int val){
         insert(val);
         int ans=-1;
-        if (son[root][1]!=0) ans=key[son[root][1]];
+        int now=son[root][1];
+        while (now!=0){ans=key[now]; now=son[now][0];}
         del(val);
         return ans;
     }

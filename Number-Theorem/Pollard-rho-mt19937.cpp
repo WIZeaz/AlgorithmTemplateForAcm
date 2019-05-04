@@ -6,8 +6,8 @@
 #include <algorithm>
 #include <random>
 using namespace std;
-#define S 3
-mt19937 gen(time(0));
+#define S 5
+mt19937_64 gen(time(0));
 long long ABS(long long x){
     if (x>=0) return x;
     return -x;
@@ -69,28 +69,16 @@ long long gcd(long long a,long long b)
 
 long long list[100001];
 int num;
-
-long long f(long long x,long long c,long long mod)
-{
-    return (mul(x,x,mod)+c)%mod;
-}
 long long Max;
 void Pollard_rho(long long x){
     if (x<2) return;
     if (isPrime(x)) {list[num]=x; ++num; return;}
     long long p=1;
-    long long c=0;
     while (p==1){
         long long a,b;
-        c=rand()%x;
-        a=rand()%x; 
-        b=f(a,c,x);
-        while (a!=b){
-            p=gcd(ABS(a-b),x);
-            if (p>1) break;
-            a=f(a,c,x);
-            b=f(f(b,c,x),c,x);
-        }
+        a=gen()%x; 
+        b=gen()%x;
+        p=gcd(ABS(a-b),x);
     }
     while (x%p==0) {x/=p;}
     Pollard_rho(p);
