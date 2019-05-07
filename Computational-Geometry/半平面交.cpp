@@ -1,5 +1,6 @@
 // 半平面交算法，O(nlogn)
 // 用于解决求多边形的核的问题
+// 也可解决多边形面积交的问题，将多边形拆成边，求半平面交即可
 // 求多边形内的区域，使得从区域内的任意一点都可看到该多边形的任意一点
 // 即连线线段在该多边形的内部
 // 例题 poj-3335
@@ -145,9 +146,9 @@ void halfplane()
 
     if (r - l <= 1)
         return;
-    for (int i = l; i < r; i++)
-        point[i] = (q[i] & q[i + 1]).second;
-    point[r] = (q[l] & q[r]).second;
+    for (int i = l, o = 1; i < r; i++, o++)
+        point[o] = (q[i] & q[i + 1]).second;
+    point[r - l + 1] = (q[l] & q[r]).second;
     ans = r - l + 1;
 }
 
