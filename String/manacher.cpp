@@ -22,11 +22,10 @@ void manacher(char str[]){
     id=1; mx=2;
     for (int i=2;i<len;++i){
         int j;
-        if (i<mx) j=min(p[2*id-i],mx-i);
-        else j=1;
+        j=min(p[2*id-i],mx-i);
         while (ch[i-j]==ch[i+j]) ++j;
         p[i]=j;
-        if (j+p[j]>mx) {id=j; mx=j+p[j];}
+        if (i+p[i]>mx) {id=i; mx=i+p[i];}
         maxlen=max(maxlen,p[i]-1);
     }
 }
