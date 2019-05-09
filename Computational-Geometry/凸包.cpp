@@ -1,88 +1,113 @@
-#include<cstdio>
-#include<cstring>
-#include<algorithm>
-#include<cmath>
-#include<iostream>
+// å‡¸åŒ…ï¼ŒO(nlogn)
+// è¾“å…¥ç‚¹è·Ÿç‚¹çš„ä¸ªæ•°ï¼Œè¾“å‡ºå‡¸åŒ…ç‚¹çš„ä¸ªæ•°
+
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <iostream>
 using namespace std;
 #define ll long long
 
-inline int read() {
-    int input=0,v=1;
-    char c=getchar();
-    while((c<'0'||c>'9')&&c!='-')c=getchar();
-    if(c=='-')v=-1,c=getchar();
-    while(c>='0'&&c<='9')input=input*10+c-'0',c=getchar();
-    return v*input;
+const double PI = acos(-1.0);
+const double eps = 1e-8;
+const int N = 50000;
+
+inline int sgn(double x)
+{
+    if (fabs(x) < eps)
+        return 0;
+    if (x < 0)
+        return -1;
+    return 1;
 }
 
-struct point {
-    int x,y;
-    point() {}
-    point(int a,int b):x(a),y(b) {}
-    point operator +(const point &b)const {
-        return point(x+b.x,y+b.y);
+struct Point
+{
+    double x, y;
+    Point(){};
+    Point(double _x, double _y) : x(_x), y(_y){};
+    Point operator+(const Point &a) const
+    {
+        return Point(x + a.x, y + a.y);
     }
-    point operator -(const point &b)const {
-        return point(x-b.x,y-b.y);
+    Point operator-(const Point &a) const
+    {
+        return Point(x - a.x, y - a.y);
     }
-    double operator *(const point &b)const {
-        return x*b.x+y*b.y;
+    double operator*(const Point &a) const
+    {
+        return x * a.x + y * a.y;
     }
-    double operator ^(const point &b)const {
-        return x*b.y-y*b.x;
+    double operator^(const Point &a) const
+    {
+        return x * a.y - y * a.x;
     }
 };
 
-inline double dis(point a,point b) {
-    return sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+double dist(Point a, Point b)
+{
+    return sqrt((a - b) * (a - b));
 }
 
-point a[11000],stack[11000];
-int n,num,l;
+Point a[N + 10], stack[N + 10];
 
-bool cmp(point b,point c){
-    double cmp=(b.y-a[1].y)*(c.x-a[1].x)-(c.y-a[1].y)*(b.x-a[1].x);
-    if(!cmp)return b.x<c.x;
-    return cmp<0;
+bool cmp(Point b, Point c)
+{
+    double cmp = (b.y - a[1].y) * (c.x - a[1].x) - (c.y - a[1].y) * (b.x - a[1].x);
+    if (!cmp)
+        return b.x < c.x;
+    return cmp < 0;
 }
 
-// ·µ»ØÍ¹°ü stack[1~n]
-void Graphm() {
-    int k=1;
-    for(int i=1; i<=n; i++)
-        if(a[i].y<a[k].y||(a[i].y==a[k].y&&a[i].x<a[k].x))k=i;
-    swap(a[1],a[k]);
+int Graphm(Point a[], int n)
+{
+    int k = 1, num;
+    for (int i = 2; i <= n; i++)
+        if (a[i].y < a[k].y || (a[i].y == a[k].y && a[i].x < a[k].x))
+            k = i;
 
-    sort(a+2,a+1+n,cmp);
-    //for(int i=1;i<=n;i++)printf("%d %d\n",a[i].x,a[i].y);
-    if(n==1) {
-        num=1;
-        stack[1]=a[1];
-    } else if(n==1) {
-        num=2;
-        stack[1]=a[1],stack[2]=a[2];
-    } else {
-        stack[1]=a[1];
-        stack[2]=a[2];
-        num=2;
-        for(int i=3; i<=n;) {
-            if(num!=1&&((stack[num]-stack[num-1])^(a[i]-stack[num-1]))<=0)
+    swap(a[1], a[k]);
+    sort(a + 2, a + 1 + n, cmp);
+
+    if (n == 1)
+    {
+        num = 1;
+        stack[1] = a[1];
+        return 1;
+    }
+    else if (n == 2)
+    {
+        num = 2;
+        stack[1] = a[1], stack[2] = a[2];
+        return 2;
+    }
+    else
+    {
+        stack[1] = a[1];
+        stack[2] = a[2];
+        num = 2;
+        for (int i = 3; i <= n; i++)
+        {
+            while (num > 1 && sgn((stack[num] - stack[num - 1]) ^ (a[i] - stack[num - 1])) <= 0)
                 num--;
-            else
-                stack[++num]=a[i++];
+            stack[++num] = a[i];
         }
+        return num;
     }
 }
 
-int main() {
-    scanf("%d",&n);
-    for(int i=1;i<=n;i++)scanf("%d %d",&a[i].x,&a[i].y);
-    Graphm();
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
+        scanf("%d %d", &a[i].x, &a[i].y);
+    int num = Graphm(a, n);
 
-    double ans=0;
-    // ²æ³Ë¼ÆËãÃæ»ý
-    for(int i=2;i<num;i++)
-        ans+=((stack[i]-stack[1])^(stack[i+1]-stack[1]))/2.0;
-    int anss=ans/50.0;
-    printf("%d\n",anss);
+    double ans = 0;
+    for (int i = 2; i < num; i++)
+        ans += ((stack[i] - stack[1]) ^ (stack[i + 1] - stack[1])) / 2.0;
+    int anss = ans / 50.0;
+    printf("%d\n", anss);
 }
