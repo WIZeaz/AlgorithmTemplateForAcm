@@ -1,13 +1,14 @@
-// 凸包，O(nlogn)
-// 输入点跟点的个数，输出凸包点的个数
+// 旋转卡壳算法，O(n)
+// 用于解决求多边形直径/平面最远点对
+// 例题 poj-2187
 
 #include <cstdio>
 #include <cstring>
+#include <iostream>
 #include <algorithm>
 #include <cmath>
-#include <iostream>
+#include <iomanip>
 using namespace std;
-#define ll long long
 
 const double PI = acos(-1.0);
 const double eps = 1e-8;
@@ -45,16 +46,16 @@ struct Point
     }
 };
 
+Point point[N + 10], stack[N + 10]; // 答案(半平面交的点)
+
 double dist(Point a, Point b)
 {
-    return sqrt((a - b) * (a - b));
+    return (a - b) * (a - b);
 }
-
-Point a[N + 10], stack[N + 10];
 
 bool cmp(Point b, Point c)
 {
-    double cmp = (b.y - a[1].y) * (c.x - a[1].x) - (c.y - a[1].y) * (b.x - a[1].x);
+    double cmp = (b.y - point[1].y) * (c.x - point[1].x) - (c.y - point[1].y) * (b.x - point[1].x);
     if (!cmp)
         return b.x < c.x;
     return cmp < 0;
@@ -97,17 +98,31 @@ int Graphm(Point a[], int n)
     }
 }
 
+double rotating_calipers(Point p[], int n)
+{
+    if (n == 2)
+        return dist(p[0], p[1]);
+    double ans = 0;
+    Point v;
+    int cur = 1;
+    for (int i = 0; i < n; i++)
+    {
+        v = p[i] - p[(i + 1) % n];
+        while (fabs(v ^ (p[cur] - p[(i + 1) % n])) < fabs(v ^ (p[(cur + 1) % n] - p[(i + 1) % n])))
+            cur = (cur + 1) % n;
+        ans = max(ans, max(dist(p[i], p[cur]), dist(p[i + 1], p[cur])));
+    }
+    return ans;
+}
+
 int main()
 {
     int n;
-    scanf("%d", &n);
-    for (int i = 1; i <= n; i++)
-        scanf("%d %d", &a[i].x, &a[i].y);
-    int num = Graphm(a, n);
-
-    double ans = 0;
-    for (int i = 2; i < num; i++)
-        ans += ((stack[i] - stack[1]) ^ (stack[i + 1] - stack[1])) / 2.0;
-    int anss = ans / 50.0;
-    printf("%d\n", anss);
+    while (~scanf("%d", &n) && n)
+    {
+        for (int i = 1; i <= n; i++)
+            scanf("%lf %lf", &point[i].x, &point[i].y);
+        int num = Graphm(point, n);
+        printf("%d\n", (int)rotating_calipers(stack + 1, num));
+    }
 }

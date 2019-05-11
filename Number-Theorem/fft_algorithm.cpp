@@ -36,7 +36,7 @@ typedef struct cpx {
 cpx ratio_a[MAX],ratio_b[MAX];//A,B多项式的系数，复数形式
 int la,lb;//A,B多项式的项数
 int maxlen;//大于等于la+lb-1的第一个2的整数次幂
-int reverse[MAX];//存储0~maxlen-1内所有数的二进制倒置后的值，方便直接查询
+int Reverse[MAX];//存储0~maxlen-1内所有数的二进制倒置后的值，方便直接查询
 
 //获得reverse数组，不知道有没有更好的办法。。
 void getreverse() {
@@ -44,14 +44,14 @@ void getreverse() {
 	int bit=0,cmp=maxlen;
 	while(cmp>1)cmp>>=1,bit++;
 	for(int i=0; i<maxlen; i++)
-		reverse[i]=(reverse[i>>1]>>1)|((i&1)<<(bit-1));
+		Reverse[i]=(Reverse[i>>1]>>1)|((i&1)<<(bit-1));
 }
 
 //FFT主体，array为要进行DFT（离散傅里叶变换）或IDFT（离散傅里叶反变换）的数组，dft为1：DFT，-1：IDFT
 void fft(cpx *array,int dft) {
 	//交换下标互为倒置的数组元素
 	for(int i=0; i<maxlen; ++i) {
-		int temp=reverse[i];
+		int temp=Reverse[i];
 		if(temp<=i) continue;
 		cpx tempp=array[i];
 		array[i]=array[temp];
