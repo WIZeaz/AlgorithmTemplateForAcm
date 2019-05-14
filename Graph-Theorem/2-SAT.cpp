@@ -23,6 +23,7 @@ bool inStack[ROADM];
 stack<int> st;
 int color[ROADM];
 int cnum=0;
+int type[ROADM];
 void tarjan(int x){
     ++cnt;
     dfn[x]=cnt;
@@ -35,11 +36,16 @@ void tarjan(int x){
             tarjan(v);
             low[x]=min(low[x],low[v]);
         } else if (inStack[v]) low[x]=min(low[x],low[v]);
+        type[x]=min(type[x],type[v]);
     }
     if (dfn[x]==low[x]){
+        if (type[x]==0) type[x]=1;
+        type[x^1]=-1*type[x];
         while (st.top()!=x){
             color[st.top()]=cnum;
             inStack[st.top()]=false;
+            type[st.top()]=type[x];
+            type[st.top()^1]=-1*type[x];
             st.pop();
         }
         color[st.top()]=cnum;
@@ -60,7 +66,7 @@ void solve(int n){
     
     printf("POSSIBLE\n");
     for (int i=0;i<2*n;i+=2)
-        if (color[i]<color[i|1]) printf("0 ");
+        if (type[i]==1) printf("0 ");
         else printf("1 ");
     printf("\n");
 }
