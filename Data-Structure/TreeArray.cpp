@@ -3,13 +3,12 @@
 #include <cstring>
 using namespace std;
 int lowbit(int x){return x&(-x);}
-
 struct TreeArray{
     int n;
     int a[500001];
     void setRange(int N) { n=N;}
     void clear() {n=0; memset(a,0,sizeof(a));}
-    void verify(int pos,int val){
+    void modify(int pos,int val){
         for (int i=pos;i<=n;i+=lowbit(i))
             a[i]+=val;
     }
