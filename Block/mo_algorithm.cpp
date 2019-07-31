@@ -28,7 +28,6 @@ int num[1000001]; //update array
 int segment::len = 1;
 int main()
 {
-	
 	int n,q;
 	scanf("%d", &n);
 	for (int i = 1; i <= n; ++i) scanf("%d", &a[i]);

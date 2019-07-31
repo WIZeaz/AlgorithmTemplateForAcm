@@ -40,6 +40,6 @@ void Sieve(int n)
 }
 int main()
 {
-    Sieve(1000);
-    for (int i=1;i<=1000;++i) printf("%d ",phi[i]);
+    Sieve(5000);
+    for (int i=0;primeList[i]<4000;++i) printf("%d ",primeList[i]);
 }
