@@ -28,12 +28,12 @@ int main()
     for (int i=1;i<=n;++i){
         int t;
         scanf("%d",&t);
-        tr.verify(i,t);
+        tr.modify(i,t);
     }
     for (int i=1;i<=m;++i){
         int x,y,t;
         scanf("%d%d%d",&t,&x,&y);
-        if (t==1) tr.verify(x,y);
+        if (t==1) tr.modify(x,y);
         else {
             printf("%d\n",tr.query(y)-tr.query(x-1));
         }
