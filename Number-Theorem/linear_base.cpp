@@ -24,7 +24,7 @@ struct linear_base{
     long long max(){
         long long ans=0;
         for (int i=BASE_N;i>=0;--i)
-            if (ans^vec[i]>ans) ans=ans^vec[i];
+            if ((ans^vec[i])>ans) ans=ans^vec[i];
         return ans;
     }
     long long min(){
@@ -63,7 +63,7 @@ struct linear_base{
             }
         return false;
     }
-    linear_base operator & (linear_base& b) const {
+    linear_base operator & (const linear_base& b) const {
         linear_base ans;
         linear_base tmp=*this;
         linear_base r;
@@ -92,9 +92,9 @@ struct linear_base{
         return ans;
     }
 };
-linear_base a,b;
+linear_base l;
 int main(){
-    /*int T;
+    int T;
     scanf("%d",&T);
     for (int C=1;C<=T;++C){
         l.clear();
@@ -112,21 +112,5 @@ int main(){
             scanf("%lld",&k);
             printf("%lld\n",l.findkth(k));
         }
-    }*/
-    int n;
-    scanf("%d",&n);
-    for (int i=0;i<n;++i){
-        long long t;
-        scanf("%lld",&t);
-        a.add(t);
     }
-    scanf("%d",&n);
-    for (int i=0;i<n;++i){
-        long long t;
-        scanf("%lld",&t);
-        b.add(t);
-    }
-    linear_base c=a&b;
-    for (int i=BASE_N;i>=0;--i)
-        if (c.vec[i]) printf("%lld\n",c.vec[i]);
 }
