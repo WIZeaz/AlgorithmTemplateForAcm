@@ -3,11 +3,13 @@
 #include <cstring>
 using namespace std;
 #define STRMAXLEN 1000010
+//str[0..len-1] rnk[0..len-1] -> 1..len
 int rnk[STRMAXLEN];
 int buckets[STRMAXLEN];
-int sa[STRMAXLEN]; //the number of rank i number,start from 1
-int tsa[STRMAXLEN];
+int sa[STRMAXLEN]; //the start position of rank i suffix, rank is starting from one, index start from one as well
+int tsa[STRMAXLEN]; //temporary suffix array
 int height[STRMAXLEN];
+
 int bucketSort(int len,int charnum,int k){
     for (int i=0;i<=charnum;++i) buckets[i]=0;
     for (int i=0;i<len;++i) buckets[rnk[i]]++;
@@ -51,6 +53,13 @@ int main()
     scanf("%s",str);
     int len=strlen(str);
     SuffixSort(str,len);
-    for (int i=1;i<=len;++i) 
+    getHeight(str,len);
+    for (int i=1;i<=len;++i)
         printf("%d ",sa[i]+1);
+        printf("\n");
+    for (int i=0;i<len;++i)
+        printf("%d ",rnk[i]);
+        printf("\n");
+    for (int i=2;i<=len;++i)
+        printf("%d ",height[i]);
 }
