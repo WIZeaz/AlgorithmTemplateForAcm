@@ -51,7 +51,8 @@ cpx ffta[2*N+10],fftb[2*N+10];
 int solve(int a[],int b[],int lena,int lenb){
 	int len=1;
 	while(len<lena+lenb)len<<=1;
-
+	getrev(len);
+	
 	for(int i=1;i<=lena;i++)ffta[i]=cpx(a[i],0);
 	for(int i=lena+1;i<=len;i++)ffta[i]=cpx(0,0);
 	for(int i=1;i<=lenb;i++)fftb[i]=cpx(b[i],0);
