@@ -44,6 +44,7 @@ ll ntta[2*N+10],nttb[2*N+10];
 int solve(int a[],int b[],int lena,int lenb){
 	int len=1;
 	while(len<lena+lenb)len<<=1;
+	getrev(len);
 
 	for(int i=1;i<=lena;i++)ntta[i]=a[i];
 	for(int i=lena+1;i<=len;i++)ntta[i]=0;
