@@ -36,12 +36,10 @@ struct matrix{
 template<typename T>
 T QuickPower(T x,long long y,T unit) //unit*x=x
 {
-    if (y==0) return unit;
-    T tmp=x;
     T ans=unit;
-    while (y>0){
-        if (y&1) ans=ans*tmp;
-        tmp=tmp*tmp;
+    while (y){
+        if (y&1) ans=ans*x;
+        x=x*x;
         y=y>>1;
     }
     return ans;
