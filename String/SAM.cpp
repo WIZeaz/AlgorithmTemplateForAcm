@@ -7,12 +7,13 @@ luogu3804
 #include <algorithm>
 #include <vector>
 using namespace std;
+#define STRMAXLEN 5000000
 struct edge{
     int v,next;
     edge(){}
     edge(int _v,int _next){v=_v; next=_next;}
-} rds[5000001];
-int head[5000001];
+} rds[STRMAXLEN];
+int head[STRMAXLEN];
 int ecnt=0;
 void addedge(int u,int v){
     rds[++ecnt]=edge(v,head[u]);
@@ -23,8 +24,9 @@ struct SAM{
         int parent,next[26],len;
         int cnt;
     };
-    node tr[5000001];
-
+    node tr[STRMAXLEN];
+    int sz[STRMAXLEN];
+    int rnk[STRMAXLEN];
     int last=0;
     int num=0;
     void init(){
@@ -58,6 +60,26 @@ struct SAM{
             }
         } else tr[now].parent=0;
         last=now;
+    }
+    void solve(){
+        //依赖排序，可以按这个顺序dp
+        for (int i=0;i<=num;++i) sz[i]=0;
+        for (int i=0;i<=num;++i) sz[tr[i].len]++;
+        for (int i=1;i<=num;++i) sz[i]+=sz[i-1];
+        for (int i=0;i<=num;++i) rnk[--sz[tr[i].len]]=i;
+        for (int i=num;i>=1;--i){
+            tr[tr[rnk[i]].parent].cnt+=tr[rnk[i]].cnt;
+        }
+        for (int i=num;i>=0;--i){
+            int x=rnk[i];
+            tr[x].ans[0]=1;
+            tr[x].ans[1]=tr[x].cnt;
+            for (int j=0;j<26;++j)
+                if (tr[x].next[j]){
+                    tr[x].ans[0]+=tr[tr[x].next[j]].ans[0];
+                    tr[x].ans[1]+=tr[tr[x].next[j]].ans[1];
+                }
+        }
     }
     void getSons(){
         for (int i=1;i<=num;++i)
