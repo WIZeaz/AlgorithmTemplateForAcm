@@ -12,24 +12,24 @@ ll quickmod(ll base,ll b,ll mod){
 }
 ll pre_inf,bsgs_inf;
 struct Hash {
-    static const int MOD=1999997;
-    static const int N=1e6;
-    int head[MOD+10],nextt[N+10],cnt,id[N+100];
-    int pre[N+100];
-    void init(){
-        memset(head,-1,sizeof head);
-        cnt=0;
-    }
-    void insert(int x, int y){
-        int k=x%MOD;
-        pre[++cnt]=x,id[cnt]=y,nextt[cnt]=head[k],head[k]=cnt;
-    }
-    int find(int x){
-        int k=x%MOD;
-        for(int i=head[k];i!=-1;i=nextt[i])
+	static const int MOD=1999997;
+	static const int N=1e6;
+	int head[MOD+10],nextt[N+10],cnt,id[N+100];
+	int pre[N+100];
+	void init(){
+		memset(head,-1,sizeof head);
+		cnt=0;
+	}
+	void insert(int x, int y){
+		int k=x%MOD;
+		pre[++cnt]=x,id[cnt]=y,nextt[cnt]=head[k],head[k]=cnt;
+	}
+	int find(int x){
+		int k=x%MOD;
+		for(int i=head[k];i!=-1;i=nextt[i])
 			if(pre[i]==x)return id[i];
-        return -1;
-    }
+		return -1;
+	}
 }has;
 void pre_bsgs(ll a,ll mod){
 	ll am=quickmod(a,bsgs_inf,mod),pre=1;
@@ -41,8 +41,28 @@ void pre_bsgs(ll a,ll mod){
 		else break;
 	}
 }
+ll gcd(ll a,ll b){
+	return !b?a:gcd(b,a%b);
+}
+void exgcd(ll a,ll b,ll &x,ll &y){
+	if(!b)x=1,y=0;
+	else{
+		exgcd(b,a%b,y,x);
+		y=y-(a/b)*x;
+	}
+}
+ll inv(ll x,ll mod){
+	ll a,b;
+	exgcd(x,mod,a,b);
+	return (a%mod+mod)%mod;
+}
 ll bsgs(ll a,ll b,ll mod){
-	ll base=quickmod(a,mod-2,mod),pre=b;
+	// 对于a不同的题目，pre放这里 对于a相同的题目，pre放外面
+	pre_inf=sqrt(mod);
+	bsgs_inf=mod/pre_inf+1;
+	pre_bsgs(a,mod);
+
+	ll base=inv(a,mod),pre=b;
 	ll ans=1e18;
 	int x=has.find(pre);
 	if(x!=-1)ans=x*bsgs_inf;
@@ -53,6 +73,22 @@ ll bsgs(ll a,ll b,ll mod){
 	}
 	return ans;
 }
+ll exbsgs(ll a,ll b,ll mod){
+	if(b==1||mod==1)return 0;
+	ll g=gcd(a,mod),k=1,t=0;
+	while(g!=1){
+		if(b%g)return 1e18;
+		t++;
+		b/=g,mod/=g,k=k*(a/g)%mod;
+		if(b==k)return t;
+		g=gcd(a,mod);
+	}
+
+	ll ans=bsgs(a,b*inv(k,mod)%mod,mod);
+	if(ans==1e18)return 1e18;
+	else return ans+t;
+}
+
 int main(){
 	int t;scanf("%d",&t);
 	while(t--){
