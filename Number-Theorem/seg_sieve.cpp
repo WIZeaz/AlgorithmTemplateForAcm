@@ -1,3 +1,5 @@
+#include<bits/stdc++.h>
+using namespace std;
 typedef long long ll;
 const int N=1e5+10;
 bool prime_small[N+10],prime[N+10];

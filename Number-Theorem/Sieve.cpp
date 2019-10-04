@@ -11,8 +11,7 @@ bool isPrime[N+1];
 int mo[N+1];
 int phi[N+1];
 int num;
-void Sieve(int n)
-{
+void Sieve(int n){
     num=0;
     memset(isPrime,true,sizeof(isPrime));
     phi[1]=1;

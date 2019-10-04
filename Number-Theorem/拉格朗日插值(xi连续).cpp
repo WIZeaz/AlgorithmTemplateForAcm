@@ -6,7 +6,7 @@ const ll mod=9999991;
 const int N=1010;
 ll a[N+10];
 ll fac[N+10],pre[N+10],back[N+10];
-// fac[i]=i!,pre[i]=(k-i)连乘对[1,i],back[i]=(k-i)连乘对[i,n]
+// fac[i]=i!,  pre[i]=(k-i)连乘对[1,i],  back[i]=(k-i)连乘对[i,n]
 
 ll quickmod(ll base,ll b){
     ll ans=1;
