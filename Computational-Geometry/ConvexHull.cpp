@@ -37,7 +37,7 @@ double dist(Point a, Point b){
 	return sqrt((a - b) * (a - b));
 }
 
-Point a[N + 10], stack[N + 10];
+Point a[N + 10], st[N + 10];
 
 bool cmp(Point b, Point c){
 	int cmp = sgn((b - a[1]) ^ (c - a[1]));
@@ -56,19 +56,19 @@ int Graphm(Point a[], int n) {
 	sort(a + 2, a + 1 + n, cmp);
 
 	if (n == 1){
-		stack[1] = a[1];
+		st[1] = a[1];
 		return 1;
 	}
 	else if (n == 2){
-		stack[1] = a[1], stack[2] = a[2];
+		st[1] = a[1], st[2] = a[2];
 		return 2;
 	}
 	else{
-		stack[1] = a[1], stack[2] = a[2], num=2;
+		st[1] = a[1], st[2] = a[2], num=2;
 		for (int i = 3; i <= n; i++) {
-			while (num > 1 && sgn((stack[num] - stack[num - 1]) ^ (a[i] - stack[num - 1])) <= 0)
+			while (num > 1 && sgn((st[num] - st[num - 1]) ^ (a[i] - st[num - 1])) <= 0)
 				num--;
-			stack[++num] = a[i];
+			st[++num] = a[i];
 		}
 		return num;
 	}

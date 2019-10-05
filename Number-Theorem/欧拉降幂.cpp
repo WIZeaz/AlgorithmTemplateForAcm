@@ -1,9 +1,11 @@
-//codeforces-906D
+// codeforces-906D
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 
-ll MOD(ll x,ll m){return x>=m?x%m+m:x;}
+ll MOD(ll x,ll m){
+    return x>=m?x%m+m:x;
+}
 ll quickmod(ll base,ll b,ll mod){
     ll ans=1;
     while(b){
