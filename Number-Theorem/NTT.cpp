@@ -20,17 +20,17 @@ ll quickpow(ll a,ll b){
 int rev[2*N+10];
 void getrev(int len){
 	int bit=0;
-	while((1<<bit)<len-1)bit++;
+	while((1<<bit)<len)bit++;
 	for(int i=0;i<len;i++)rev[i]=(rev[i>>1]>>1)|((i&1)<<(bit-1));
 }
 
-void ntt(ll x[],int len,int inv){
+void ntt(ll x[],int len,int opt){
 	for(int i=0;i<len;i++)
-		if(i<rev[i])swap(x[i+1],x[rev[i]+1]);
+		if(i<rev[i])swap(x[i],x[rev[i]]);
 	for(int mid=1;mid<len;mid<<=1){
 		ll tmp=quickpow(g,(mod-1)/(mid*2));
-		if(inv==-1)tmp=quickpow(tmp,mod-2);
-		for(int i=1;i<=len;i+=(mid<<1)){
+		if(opt==-1)tmp=quickpow(tmp,mod-2);
+		for(int i=0,add=mid<<1;i<len;i+=add){
 			ll base=1;
 			for(int j=i;j<i+mid;j++,base=base*tmp%mod){
 				int a=x[j],b=base*x[j+mid]%mod;
@@ -46,33 +46,34 @@ int solve(int a[],int b[],int lena,int lenb){
 	while(len<lena+lenb)len<<=1;
 	getrev(len);
 
-	for(int i=1;i<=lena;i++)ntta[i]=a[i];
-	for(int i=lena+1;i<=len;i++)ntta[i]=0;
-	for(int i=1;i<=lenb;i++)nttb[i]=b[i];
-	for(int i=lenb+1;i<=len;i++)nttb[i]=0;
+	for(int i=0;i<lena;i++)ntta[i]=a[i];
+	for(int i=lena;i<len;i++)ntta[i]=0;
+	for(int i=0;i<lenb;i++)nttb[i]=b[i];
+	for(int i=lenb;i<len;i++)nttb[i]=0;
 
 	getrev(len);
 	ntt(ntta,len,1),ntt(nttb,len,1);
-	for(int i=1;i<=len;i++)ntta[i]=ntta[i]*nttb[i]%mod;
+	for(int i=0;i<len;i++)ntta[i]=ntta[i]*nttb[i]%mod;
 	ntt(ntta,len,-1);
 
-	int invmod=quickpow(len,mod-2);
-	for(int i=1;i<=len;i++)ntta[i]=ntta[i]*invmod%mod;
+	int optmod=quickpow(len,mod-2);
+	for(int i=0;i<len;i++)ntta[i]=ntta[i]*optmod%mod;
 
 	return len;
 }
 
 char s1[N+10],s2[N+10];
 int a[N+10],b[N+10],ans[2*N+10];
+// 下标从0开始
 int main(){
 	int n,m;scanf("%d%d",&n,&m);
-	for(int i=1;i<=n+1;i++)scanf("%d",&a[i]);
-	for(int i=1;i<=m+1;i++)scanf("%d",&b[i]);
+	for(int i=0;i<=n;i++)scanf("%d",&a[i]);
+	for(int i=0;i<=m;i++)scanf("%d",&b[i]);
 
 	int len=solve(a,b,n+1,m+1),pre=0;
 
-	for(int i=1;i<=n+m+1;i++){
-		ans[i]=ntta[i];
+	for(int i=0;i<=n+m;i++){
+		ans[i]=int(ntta[i]+0.5);
 		printf("%d ",ans[i]);
 	}
 }
