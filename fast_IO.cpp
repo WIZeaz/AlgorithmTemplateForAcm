@@ -8,7 +8,7 @@ inline bool read(T &ret) {
 	return 1;
 }
 
-inline void out(int x) {
+inline void out(long long x) {
 	if(x>9)out(x/10); 
 	putchar(x%10+'0');
 }

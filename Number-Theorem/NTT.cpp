@@ -51,7 +51,6 @@ int solve(int a[],int b[],int lena,int lenb){
 	for(int i=0;i<lenb;i++)nttb[i]=b[i];
 	for(int i=lenb;i<len;i++)nttb[i]=0;
 
-	getrev(len);
 	ntt(ntta,len,1),ntt(nttb,len,1);
 	for(int i=0;i<len;i++)ntta[i]=ntta[i]*nttb[i]%mod;
 	ntt(ntta,len,-1);
