@@ -107,11 +107,3 @@ V operator%(const V &a,const V &b){
 	res.resize(b.size()-1);
 	return res;
 }
-
-int main(){
-	int n,m;scanf("%d%d",&n,&m);
-	V v(n);
-	for(int i=0;i<n;i++)scanf("%lld",&v[i]),v[i]%=mod;
-	auto x=BM::BM(v);
-	for(int i=0;i<x.size();i++)x[i]=(x[i]+mod)%mod;
-}
