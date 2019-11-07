@@ -1,7 +1,4 @@
-#include<cstdio>
-#include<iostream>
-#include<cstdlib>
-#include<ctime>
+#include<bits/stdc++.h>
 using namespace std;
 #define ll long long
 const int S=8,N=50000;// S为随机判断次数，一般8-10次就够了
@@ -38,7 +35,7 @@ bool Miller_Rabin(ll n) {
 		ll a=rand()%(n-1)+1;
 		a=pow_mod(a,x,n);
 		ll pre=a;
-		for(int o=1; o<=t; o++) {
+		for(int j=1; j<=t; j++) {
 			a=mult_mod(a,a,n);
 			if(a==1&&pre!=1&&pre!=n-1)return false;
 			pre=a;
