@@ -8,17 +8,6 @@ luogu3804
 #include <vector>
 using namespace std;
 #define STRMAXLEN 5000000
-struct edge{
-    int v,next;
-    edge(){}
-    edge(int _v,int _next){v=_v; next=_next;}
-} rds[STRMAXLEN];
-int head[STRMAXLEN];
-int ecnt=0;
-void addedge(int u,int v){
-    rds[++ecnt]=edge(v,head[u]);
-    head[u]=ecnt;
-}
 struct SAM{
     struct node{
         int parent,next[26],len;
@@ -70,33 +59,10 @@ struct SAM{
         for (int i=num;i>=1;--i){
             tr[tr[rnk[i]].parent].cnt+=tr[rnk[i]].cnt;
         }
-        for (int i=num;i>=0;--i){
-            int x=rnk[i];
-            tr[x].ans[0]=1;
-            tr[x].ans[1]=tr[x].cnt;
-            for (int j=0;j<26;++j)
-                if (tr[x].next[j]){
-                    tr[x].ans[0]+=tr[tr[x].next[j]].ans[0];
-                    tr[x].ans[1]+=tr[tr[x].next[j]].ans[1];
-                }
-        }
-    }
-    void getSons(){
-        for (int i=1;i<=num;++i)
-            addedge(tr[i].parent,i);
-    }
-    void dfs(int x){
-        //tr[x].cnt=0;
-        for (int i=head[x];i!=0;i=rds[i].next){
-            dfs(rds[i].v);
-            tr[x].cnt+=tr[rds[i].v].cnt;
-        }
-
     }
     long long getAns(){
         long long ans=0;
-        getSons();
-        dfs(0);
+        solve();
         for (int i=1;i<=num;++i)
             if (tr[i].cnt!=1){
                 ans=max(ans,(long long)tr[i].cnt*(long long)tr[i].len);
