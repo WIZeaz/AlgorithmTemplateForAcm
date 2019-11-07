@@ -18,9 +18,9 @@ void sieve(){
 			sp[prime[0]]=(sp[prime[0]-1]+i)%mod;
 			// sp里维护 sp[i]=sigma(prime[i])
 		}
-		for(int o=1;o<=prime[0]&&i*prime[o]<=N;o++){
-			prime[i*prime[o]]++;
-			if(i%prime[o]==0)break;
+		for(int j=1;j<=prime[0]&&i*prime[j]<=N;j++){
+			prime[i*prime[j]]++;
+			if(i%prime[j]==0)break;
 		}
 	}
 }
@@ -33,8 +33,8 @@ ll S(ll x,int y){
 	if(y==0)ans+=2;
 	for(int i=y+1;i<=prime[0]&&prime[i]*prime[i]<=x;i++){
 		ll tmp=prime[i];
-		for(int o=1;tmp*prime[i]<=x;o++,tmp*=prime[i]){
-			ans=(ans+(prime[i]^o)%mod*S(x/tmp,i)%mod+(prime[i]^(o+1)))%mod;
+		for(int j=1;tmp*prime[i]<=x;j++,tmp*=prime[i]){
+			ans=(ans+(prime[i]^j)%mod*S(x/tmp,i)%mod+(prime[i]^(j+1)))%mod;
 		}
 	}
 	return ans%mod;

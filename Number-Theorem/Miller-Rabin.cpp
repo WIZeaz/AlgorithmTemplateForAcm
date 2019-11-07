@@ -13,9 +13,9 @@ int prime[N+100]={0}, num=0;
 void pre(){
     for(int i=2;i<=N;i++){
         if(!prime[i])prime[++num]=i;
-        for(int o=1;o<=num&&prime[o]<=N/i;o++){
-            prime[prime[o]*i]++;
-            if(i%prime[o]==0)break;
+        for(int j=1;j<=num&&prime[j]<=N/i;j++){
+            prime[prime[j]*i]++;
+            if(i%prime[j]==0)break;
         }
     }
 }
@@ -61,7 +61,7 @@ bool Miller_Rabin(ull n){
         ull a=rand()%(n-1)+1;
         a=pow_mod(a,x,n);
         ull pre=a;
-        for(int o=1;o<=t;o++){
+        for(int j=1;j<=t;j++){
             a=mult_mod(a,a,n);
             if(a==1&&pre!=1&&pre!=n-1)return false;
             pre=a;
