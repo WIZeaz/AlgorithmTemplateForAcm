@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct permanentSegmentTree{
+struct persistent_segment_tree{
     struct node{
         int lc,rc,l,r;
         int val;
@@ -52,7 +52,7 @@ struct permanentSegmentTree{
         else return _query(tr[now1].rc,tr[now2].rc,k-t);
     }
 };
-permanentSegmentTree tr;
+persistent_segment_tree tr;
 int a[500001];
 int b[500001];
 int main(){
