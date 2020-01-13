@@ -17,8 +17,6 @@ struct point{
         x=_x; y=_y;
     }
     bool operator<(const point& b)const{
-        //return cross(x-x_0,y-y_0,b.x-x_0,b.y-y_0)>0;
-        //return (y-y_0)*(b.x-x_0)<(x-x_0)*(b.y-y_0);
         //return atan2(double(y-y_0),double(x-x_0))<atan2(double(b.y-y_0),double(b.x-x_0));
         point tmp1=*this,tmp2=b;
         tmp1.x-=x_0; tmp1.y-=y_0;
@@ -27,14 +25,6 @@ struct point{
         int q2=Quadrant(tmp2.x,tmp2.y);
         if (q1==q2) return tmp1.x*tmp2.y-tmp1.y*tmp2.x>0;
         return q1<q2;
-        /*if (tmp1.y*tmp2.y>0) return tmp1.x*tmp2.y-tmp1.y*tmp2.x>0;
-        if (tmp1.y*tmp2.y<0) return tmp1.y>0;
-        if (tmp1.y==0 && tmp2.y==0) return tmp1.x>tmp2.x;
-        if (tmp1.y==0 && tmp1.x>0) return true;
-        if (tmp2.y==0 && tmp2.x>0) return false;
-        if (tmp1.y==0) return tmp2.y<0;
-        return tmp1.y>0;*/
-       // return tmp1.x*tmp2.y-tmp1.y*tmp2.x>0;
     }
 };
 point pts[10001];
