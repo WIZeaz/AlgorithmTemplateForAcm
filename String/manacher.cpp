@@ -7,8 +7,7 @@ using namespace std;
 int maxlen=0;
 char ch[2*MAXSTRLEN+3];
 int p[2*MAXSTRLEN+3];
-void manacher(char str[]){
-    int len=strlen(str);
+void manacher(char str[],int len){
     for (int i=0;i<len;++i){
         ch[2*i+1]='#';
         ch[2*i+2]=str[i];
@@ -33,6 +32,7 @@ char str[MAXSTRLEN+1];
 int main(){
     scanf("%s",str);
     maxlen=0;
-    manacher(str);
+    int len=strlen(str);
+    manacher(str,len);
     printf("%d",maxlen);
 }

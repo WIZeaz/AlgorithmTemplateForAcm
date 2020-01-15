@@ -46,7 +46,7 @@ bool cmp(Point b, Point c){
 	return false;
 }
 
-int Graphm(Point a[], int n) {
+int graham(Point a[], int n) {
 	int k = 1, num;
 	for (int i = 2; i <= n; i++)
 		if (sgn(a[i].y - a[k].y) == -1 || (sgn(a[i].y - a[k].y) == 0 && sgn(a[i].x - a[k].x) == -1))
