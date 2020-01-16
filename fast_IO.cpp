@@ -2,9 +2,12 @@ struct FastIO {
 	static const int LEN=1<<18|1;
 	char buf[LEN],wbuf[LEN];
 	int s=0,t=0,wpos=0;
-	inline int read(){
-		return (s==t)&&(t=(s=0)+fread(buf,1,LEN,stdin)),s==t?-1:buf[s++];
-	}
+    	inline int read(){
+        	int res=((s==t)&&(t=(s=0)+fread(buf,1,LEN,stdin)),s==t?-1:buf[s++]);
+        	// 注意，是读取到文件末尾时立刻退出程序
+        	if(res==-1)exit(0);
+		return res;
+    	}
 	inline void out(int x){
 		wpos==LEN?fwrite(wbuf,1,LEN,stdout),wbuf[0]=x,wpos=1:wbuf[wpos++]=x;
 	}
@@ -27,7 +30,7 @@ struct FastIO {
 	inline void rstr(char *str){
 		int c=read();
 		while(c<=32)c=read();
-		while(c>32)*str++=c,c=getchar();
+		while(c>32)*str++=c,c=read();
 		*str=0;
 	}
 	// 根据类型
