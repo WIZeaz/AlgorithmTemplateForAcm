@@ -13,7 +13,6 @@ void tarjan(int u,int f){
     st.push(u);
     for (auto v:edges[u]){
         if (!dfn[v]) tarjan(v,u);
-        // if for bidirected graph
         if (v!=f) low[u]=min(low[u],low[v]);
     }
     if (low[u]==dfn[u]){
