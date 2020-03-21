@@ -11,16 +11,12 @@ int val[20001];
 int totval[20001],dp[20001];
 bool vis[20001];
 stack<int> st;
-void tarjan(int u,int f){
+void tarjan(int u){
     dfn[u]=low[u]=++timestamp;
     st.push(u);
     for (auto v:edges[u]){
-        if (!dfn[v]){
-            tarjan(v,u);
-            low[u]=min(low[u],low[v]);
-        } else if (!color[v]){
-            low[u]=min(low[u],dfn[v]);
-        }
+        if (!dfn[v]) tarjan(v);
+        if (!color[v]) low[u]=min(low[u],low[v]);
     }
     if (low[u]==dfn[u]){
         tot++;
@@ -57,7 +53,7 @@ int main(){
     timestamp=0;
     tot=0;
     for (int i=1;i<=n;++i)
-        if (!dfn[i]) tarjan(i,0);
+        if (!dfn[i]) tarjan(i);
     //build new graph
     for (int i=1;i<=n;++i) rds[i].clear();
     //invert edge graph (for toposort & dp)
