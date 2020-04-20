@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-deque<int> edges[500001];
+vector<int> edges[500001];
 //Maximum of digits
 #define MAXD 19
 int f[500001][MAXD+1];
