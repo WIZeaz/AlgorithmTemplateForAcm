@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int lowbit(int x){return x&(-x);}
-struct tree_array{
+struct TreeArray{
     int n,st;
     int a[200001];
     inline void setRange(int N) {
@@ -28,7 +28,7 @@ struct tree_array{
         return ans+1;
     }
 };
-tree_array tr;
+TreeArray tr;
 int main()
 {
     int n,m;

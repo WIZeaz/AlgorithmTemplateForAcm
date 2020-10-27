@@ -2,7 +2,7 @@
 #include <cstring>
 #include <string>
 using namespace std;
-struct Segment_Tree{
+struct SegmentTree{
     //constants and innerclass
     struct node{
         int l,r,lc,rc;
@@ -45,13 +45,14 @@ struct Segment_Tree{
         f.val=lc.val+rc.val;
     }
 
-    //warning: don't invoke both update and updateR in single segment tree, it may cause error
     void update(int pos,int val,int now=root){
-        int mid=(tr[now].l+tr[now].r)>>1;
         if (tr[now].l==tr[now].r) {
             tr[now].val+=val; 
             return;
-        } else if (pos<=mid) update(pos,val,tr[now].lc);
+        }
+        pushdown(tr[now],tr[tr[now].lc],tr[tr[now].rc]);
+        int mid=(tr[now].l+tr[now].r)>>1;
+        if (pos<=mid) update(pos,val,tr[now].lc);
         else update(pos,val,tr[now].rc);
         //write parent update here
         pushup(tr[now],tr[tr[now].lc],tr[tr[now].rc]);
@@ -90,7 +91,7 @@ struct Segment_Tree{
     }
 
 };
-Segment_Tree tr;
+SegmentTree tr;
 int main()
 {
     int l,r;
