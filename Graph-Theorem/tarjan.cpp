@@ -1,30 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<int> edges[200001];
-set<int> rds[200001];
-int dfn[200001];
-int low[200001];
-int color[200001];
-int timestamp;
-int tot=0;
-stack<int> st;
-void tarjan(int u,int f){
-    dfn[u]=low[u]=++timestamp;
-    st.push(u);
-    for (auto v:edges[u]){
-        if (!dfn[v]) tarjan(v,u);
-        if (v!=f) low[u]=min(low[u],low[v]);
-    }
-    if (low[u]==dfn[u]){
-        tot++;
-        while (!st.empty() && st.top()!=u){
-            color[st.top()]=tot;
-            st.pop();
+namespace Tarjan{
+    vector<int> edges[200001];
+    set<int> rds[200001];
+    int dfn[200001];
+    int low[200001];
+    int color[200001];
+    int timestamp;
+    int tot=0;
+    stack<int> st;
+    void tarjan(int u,int f){
+        dfn[u]=low[u]=++timestamp;
+        st.push(u);
+        for (auto v:edges[u]){
+            if (!dfn[v]) tarjan(v,u);
+            if (v!=f) low[u]=min(low[u],low[v]);
         }
-        st.pop();
-        color[u]=tot;
+        if (low[u]==dfn[u]){
+            tot++;
+            while (!st.empty() && st.top()!=u){
+                color[st.top()]=tot;
+                st.pop();
+            }
+            st.pop();
+            color[u]=tot;
+        }
     }
 }
+using namespace Tarjan;
 int main(){
     int n,m,T;
     scanf("%d",&T);

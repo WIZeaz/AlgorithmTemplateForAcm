@@ -1,64 +1,50 @@
-#include <iostream>
-#include <queue>
-#include <cstdio>
-#include <vector>
-#include <cstring>
+#include <bits/stdc++.h>
 using namespace std;
-
-//dijkstra
-#define N 2000
-#define INF 0x7f7f7f7f
-struct PathNode{
-    int to,val;
-    PathNode(){}
-    PathNode(int _to,int _val){
-        to=_to; val=_val;
-    }
-    bool operator < (const PathNode& b) const{
-        return val>b.val;
-    }
-};
-vector<PathNode> list[N+1];
-int dis[N+1];
-priority_queue<PathNode> v;
-bool vis[N+1];
-void dijkstra(int s)
-{
-    memset(vis,false,sizeof(vis)); 
-    memset(dis,127,sizeof(dis));
-    dis[s]=0;
-    v=priority_queue<PathNode>();
-    v.push(PathNode(s,0));
-    while (!v.empty()){
-        PathNode tmp=v.top();
-        v.pop();
-        if (vis[tmp.to]) continue;
-        vis[tmp.to]=true;
-        int len=list[tmp.to].size();
-        for (int i=0;i<len;++i)
-            if (!vis[list[tmp.to][i].to] && dis[tmp.to]+list[tmp.to][i].val<dis[list[tmp.to][i].to]){
-                dis[list[tmp.to][i].to]=dis[tmp.to]+list[tmp.to][i].val;
-                v.push(PathNode(list[tmp.to][i].to,dis[list[tmp.to][i].to]));
+namespace Graph{
+    struct edge{
+        int v,w;
+        bool operator<(const edge& b) const{
+            return w>b.w;
+        }
+    };
+    vector<edge> edges[200001];
+    int dist[200001];
+    bool vis[200001];
+    const int INF=0x3f3f3f3f;
+    void dijkstra(int s){
+        memset(dist,0x3f,sizeof(dist));
+        memset(vis,0,sizeof(vis));
+        priority_queue<edge> que;
+        que.push({s,0});
+        dist[s]=0;
+        while (!que.empty()){
+            auto tmp=que.top();
+            que.pop();
+            if (vis[tmp.v]) continue;
+            int &u=tmp.v;
+            int &d=tmp.w;
+            vis[u]=true;
+            for (auto it:edges[u]){
+                int &v=it.v;
+                int &w=it.w;
+                if (!vis[v] && d+w<dist[v]){
+                    dist[v]=d+w;
+                    que.push({v,d+w});
+                }
             }
+        }
     }
 }
-//dijkstra
-
+using namespace Graph;
 int main()
 {
-    int n,m,s,t;
-    while (~scanf("%d%d",&n,&m)){
-        for (int i=0;i<n;++i) list[i].clear();
-        for (int i=0;i<m;++i){
-            int a,b,x;
-            scanf("%d%d%d",&a,&b,&x);
-            list[a].push_back(PathNode(b,x));
-            list[b].push_back(PathNode(a,x));
-        }
-        scanf("%d%d",&s,&t);
-        dijkstra(s);
-        if (dis[t]==INF) printf("-1\n");
-        else printf("%d\n",dis[t]);
-    } 
-    return 0;
+    int n,m,s;
+    scanf("%d%d%d",&n,&m,&s);
+    for (int i=0;i<m;++i){
+        int u,v,w;
+        scanf("%d%d%d",&u,&v,&w);
+        edges[u].push_back({v,w});
+    }
+    dijkstra(s);
+    for (int i=1;i<=n;++i) printf("%d ",dist[i]);
 }
