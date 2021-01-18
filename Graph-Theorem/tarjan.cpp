@@ -2,13 +2,12 @@
 using namespace std;
 namespace Tarjan{
     vector<int> edges[200001];
-    set<int> rds[200001];
+    stack<int> st;
     int dfn[200001];
     int low[200001];
     int color[200001];
     int timestamp;
     int tot=0;
-    stack<int> st;
     void tarjan(int u,int f){
         dfn[u]=low[u]=++timestamp;
         st.push(u);
@@ -45,15 +44,6 @@ int main(){
         tot=0;
         for (int i=1;i<=n;++i)
             if (!dfn[i]) tarjan(i,0);
-        //build new graph
-        for (int i=1;i<=n;++i) rds[i].clear();
-        for (int u=1;u<=n;++u){
-            for (auto v:edges[u]){
-                if (color[u]!=color[v]){
-                    rds[color[u]].insert(color[v]);
-                }
-            }
-        }
     }
     return 0;
 }

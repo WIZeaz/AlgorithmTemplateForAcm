@@ -2,34 +2,38 @@
 using namespace std;
 vector<int> edges[20001];
 set<int> rds[20001];
-int dfn[20001];
-int low[20001];
-int color[20001];
-int timestamp;
-int tot=0;
-int val[20001];
+
 int totval[20001],dp[20001];
-bool vis[20001];
-stack<int> st;
-void tarjan(int u){
-    dfn[u]=low[u]=++timestamp;
-    st.push(u);
-    for (auto v:edges[u]){
-        if (!dfn[v]) tarjan(v);
-        if (!color[v]) low[u]=min(low[u],low[v]);
-    }
-    if (low[u]==dfn[u]){
-        tot++;
-        while (!st.empty() && st.top()!=u){
-            color[st.top()]=tot;
-            totval[tot]+=val[st.top()];
-            st.pop();
+namespace Tarjan{
+    int dfn[20001];
+    int low[20001];
+    int color[20001];
+    int timestamp;
+    int scc=0;
+    int val[20001];
+    bool vis[20001];
+    stack<int> st;
+    void tarjan(int u){
+        dfn[u]=low[u]=++timestamp;
+        st.push(u);
+        for (auto v:edges[u]){
+            if (!dfn[v]) tarjan(v);
+            if (!color[v]) low[u]=min(low[u],low[v]);
         }
-        st.pop();
-        color[u]=tot;
-        totval[tot]+=val[u];
+        if (low[u]==dfn[u]){
+            scc++;
+            while (!st.empty() && st.top()!=u){
+                color[st.top()]=scc;
+                totval[scc]+=val[st.top()];
+                st.pop();
+            }
+            st.pop();
+            color[u]=scc;
+            totval[scc]+=val[u];
+        }
     }
 }
+using namespace Tarjan;
 void dfs(int u){
     vis[u]=true;
     dp[u]=totval[u];
