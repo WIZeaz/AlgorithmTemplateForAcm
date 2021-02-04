@@ -27,7 +27,7 @@ struct Dinic{
         e[v].push_back(num-1);
     }
 
-    void bfs(int s,int t){
+    bool bfs(){
         fill(dist+1,dist+1+n,n);
         fill(vis+1,vis+1+n,0);
         queue<int> que;
@@ -45,6 +45,7 @@ struct Dinic{
                 que.push(e.v);
             }
         }
+        return dist[t]<n;
     }
     
     int augment(int u,int f){
@@ -69,12 +70,11 @@ struct Dinic{
 
     long long maxflow(){
         long long f=0;
-        do{
-            bfs(s,t);
+        while (bfs()){
             fill(cur+1,cur+1+n,0);
             f+=augment(s,INT_MAX);
             //printf("f=%lld\n",f);
-        } while (dist[t]<n);
+        }
         return f;
     }
 };

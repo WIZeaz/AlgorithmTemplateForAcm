@@ -37,6 +37,7 @@ struct SegmentTree{
     }
     void pushdown(node &f,node &lc, node &rc){
         //transfer flag and update
+        if (tr[now].cover==0) return;
         lazyupdate(lc,f.cover);
         lazyupdate(rc,f.cover);
         f.cover=0;
@@ -66,7 +67,7 @@ struct SegmentTree{
             return;
         } else {
             //Pushdown here
-            if (tr[now].cover!=0) pushdown(tr[now],tr[tr[now].lc],tr[tr[now].rc]);
+            pushdown(tr[now],tr[tr[now].lc],tr[tr[now].rc]);
 
             int mid=(tr[now].l+tr[now].r)>>1;
             if (r<=mid) updateR(l,r,val,tr[now].lc);
@@ -82,7 +83,7 @@ struct SegmentTree{
     int query(int l,int r,int now=root){
         if (tr[now].l==l && tr[now].r==r) return tr[now].val;
         else {
-            if (tr[now].cover!=0) pushdown(tr[now],tr[tr[now].lc],tr[tr[now].rc]);
+            pushdown(tr[now],tr[tr[now].lc],tr[tr[now].rc]);
             int mid=(tr[now].l+tr[now].r)>>1;
             if (r<=mid) return query(l,r,tr[now].lc);
             else if (l>mid) return query(l,r,tr[now].rc);
