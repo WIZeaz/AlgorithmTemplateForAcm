@@ -35,11 +35,11 @@ struct SegmentTree{
         x.cover+=increment;
         x.val+=increment*(x.r-x.l+1);
     }
-    void pushdown(node &f,node &lc, node &rc){
+    void pushdown(node &f){
         //transfer flag and update
-        if (tr[now].cover==0) return;
-        lazyupdate(lc,f.cover);
-        lazyupdate(rc,f.cover);
+        if (f.cover==0) return;
+        lazyupdate(tr[tr[now].lc],f.cover);
+        lazyupdate(tr[tr[now].rc],f.cover);
         f.cover=0;
     }
     void pushup(node &f,node &lc,node &rc){

@@ -9,11 +9,11 @@ MO's Algorithm
 #include <algorithm>
 #include <cstring>
 using namespace std;
-struct segment {
+struct Query {
 	int l, r, id;
 	static int len;
-	bool operator < (const segment& b) const{
-		if (l / len != b.l / len) return l / segment::len < b.l / segment::len;
+	bool operator < (const Query& b) const{
+		if (l / len != b.l / len) return l / Query::len < b.l / Query::len;
 		else {
 			//optimize 
 			if ((l / len) & 1) return r < b.r; 
@@ -22,17 +22,17 @@ struct segment {
 	}
 };
 int a[30001]; //origin input data
-segment query[200001]; //store the query
+Query query[200001]; //store the query
 int ans[200001];  //store the answer
 int num[1000001]; //update array
-int segment::len = 1;
+int Query::len = 1;
 int main()
 {
 	int n,q;
 	scanf("%d", &n);
 	for (int i = 1; i <= n; ++i) scanf("%d", &a[i]);
 	scanf("%d", &q);	
-	segment::len = (int) sqrt(n); //length of block
+	Query::len = (int) sqrt(n); //length of block
 	for (int i = 0; i < q; ++i) {
 		scanf("%d%d", &query[i].l, &query[i].r);
 		query[i].id = i;
